@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case Converter</title>
+    <style> .b, .title {background : black; color : white; font-size : 20px; font-family: "Times New Roman",serif; text-align: center; margin: 10px} </style>
+</head>
+<body>
+    <div style = "display : flex; flex-direction : column">
+        <div class = "title">Case Converter</div>
+    <label for="text-area"></label><textarea id = "text-area" rows = "30" cols = "200"></textarea>
+    <div style = "display : flex">
+    <button id = "upper-case" class = "b">Upper Case</button>
+    <button id = "lower-case" class = "b">Lower Case</button>
+    <button id = "proper-case" class = "b">Proper Case</button>
+    <button id = "sentence-case" class = "b">Sentence Case</button>
+        <button id = "save-text-file" class = "b">Save Text File</button>
+    </div>
+</div>
+<script>
+    let textArea = document.getElementById("text-area");
+    let text = [];
+    function download (filename, text) {
+        let element = document.createElement("a");
+        element.setAttribute("href", "data: text/plain; charset = utf-8," + encodeURIComponent(text));
+        element.setAttribute("download", filename);
+        element.style.display = "none";
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+        document.getElementById("save-text-file").addEventListener("click", function (){
+            download ("text.txt", textArea.value);
+        });
+        document.getElementById("upper-case").addEventListener("click", function () {
+            text = textArea.value.toUpperCase();
+            textArea.value = text;
+        });
+        document.getElementById("lower-case").addEventListener("click", function () {
+            text = textArea.value.toLowerCase();
+            textArea.value = text;
+        });
+        document.getElementById("proper-case").addEventListener("click", function () {
+            text = textArea.value.toLowerCase();
+            text = text[0].toUpperCase() + text.slice(1);
+            for (let i = 0; i < text.length; i ++){
+                if (text[i] === " ") {
+                    text = text.slice(0, i + 1) + text[i + 1].toUpperCase() + text.slice(i + 2);
+                }
+            }
+           textArea.value = text;
+        });
+        document.getElementById("sentence-case").addEventListener("click", function (){
+            text = textArea.value.toLowerCase();
+            text = text[0].toUpperCase() + text.slice(1, - 1);
+            for (let i = 0; i < text.length; i ++) {
+                if (text[i] === ".") {
+                    text = text.slice(0, i + 2) + text[i + 2].toUpperCase() + text.slice(i + 3);
+                }
+            }
+            textArea.value = text + ".";
+        });
+</script>
+</body>
+</html>
